@@ -17,8 +17,11 @@ namespace Mai\Arena\Disqus;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Require classes.
-require_once __DIR__ . '/class-config.php';
-require_once __DIR__ . '/class-settings.php';
+require_once __DIR__ . '/classes/class-config.php';
+require_once __DIR__ . '/classes/class-settings.php';
+
+// Instantiate settings.
+new Settings();
 
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init' );
 /**
@@ -43,16 +46,4 @@ function init() {
 		'shortname'  => $shortname,
 		'post_types' => [ 'post' ],
 	] );
-}
-
-add_action( 'admin_init', __NAMESPACE__ . '\init_settings' );
-/**
- * Instantiate settings.
- *
- * @since 0.1.0
- *
- * @return void
- */
-function init_settings() {
-	new Settings();
 }
