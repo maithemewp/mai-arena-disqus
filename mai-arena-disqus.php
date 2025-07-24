@@ -35,9 +35,15 @@ function init() {
 		return;
 	}
 
-	// Instantiate Disqus.
-	new Config( [
+	// Default args.
+	$args = [
 		'shortname'  => $shortname,
 		'post_types' => [ 'post' ],
-	] );
+	];
+
+	// Allow filtering of args.
+	$args = apply_filters( 'mai_arena_disqus_args', $args );
+
+	// Instantiate Disqus.
+	new Config( $args );
 }
