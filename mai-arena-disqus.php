@@ -4,7 +4,7 @@
  * Plugin Name:      Mai Arena Disqus
  * Plugin URI:       https://bizbudding.com
  * Description:      Enables Disqus compatibility for sites imported from Arena's Tempest CMS.
- * Version:          0.1.0
+ * Version:          0.2.0
  * Requires Plugins: disqus-conditional-load
  *
  * Author:           BizBudding
@@ -18,10 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Require classes.
 require_once __DIR__ . '/classes/class-config.php';
-require_once __DIR__ . '/classes/class-settings.php';
-
-// Instantiate settings.
-new Settings();
 
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init' );
 /**
@@ -32,9 +28,7 @@ add_action( 'plugins_loaded', __NAMESPACE__ . '\init' );
  * @return void
  */
 function init() {
-	// Get shortname from settings.
-	$settings  = new Settings();
-	$shortname = $settings->get_shortname();
+	$shortname = get_option( 'disqus_forum_url' );
 
 	// Bail if no shortname is set.
 	if ( ! $shortname ) {
