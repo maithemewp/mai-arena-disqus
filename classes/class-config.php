@@ -32,6 +32,7 @@ class Config {
 			'shortname'  => null,
 			'post_types' => [ 'post' ],
 			'meta_key'   => 'dsq_thread_identifier',
+			'id'         => 'comment',
 		] );
 
 		// Bail if shortname is not set.
@@ -50,8 +51,9 @@ class Config {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'wp_head',   [ $this, 'set_config' ], 5 );
-		add_action( 'save_post', [ $this, 'save_post' ] );
+		add_action( 'wp_head',             [ $this, 'set_config' ], 5 );
+		add_action( 'dsq_before_comments', [ $this, 'add_div' ] );
+		add_action( 'save_post',           [ $this, 'save_post' ] );
 	}
 
 	/**
@@ -87,6 +89,23 @@ class Config {
 			$url,
 			$title
 		);
+	}
+
+	/**
+	 * Add a div before the comments.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @return void
+	 */
+	public function add_div() {
+		// Bail if no id is set.
+		if ( ! $this->args['id'] ) {
+			return;
+		}
+
+		// Add the div.
+		echo '<div id="' . $this->args['id'] . '"></div>';
 	}
 
 	/**
