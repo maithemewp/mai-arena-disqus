@@ -32,7 +32,7 @@ class Config {
 			'shortname'  => null,
 			'post_types' => [ 'post' ],
 			'meta_key'   => 'dsq_thread_identifier',
-			'id'         => 'comment',
+			'id'         => 'comments',
 		] );
 
 		// Bail if shortname is not set.
