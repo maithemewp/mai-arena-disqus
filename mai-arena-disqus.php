@@ -5,6 +5,7 @@
  * Plugin URI:       https://bizbudding.com
  * Description:      Enables Disqus compatibility for sites imported from Arena's Tempest CMS.
  * Version:          0.3.0
+ * Requires PHP:     8.1
  * Requires Plugins: disqus-conditional-load
  *
  * Author:           BizBudding
