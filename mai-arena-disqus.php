@@ -19,6 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // Require classes.
 require_once __DIR__ . '/classes/class-config.php';
 
+// Register WP-CLI command.
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require_once __DIR__ . '/classes/class-cli.php';
+	\WP_CLI::add_command( 'mai-arena-disqus', __NAMESPACE__ . '\CLI' );
+}
+
 add_action( 'plugins_loaded', __NAMESPACE__ . '\init' );
 /**
  * Initialize the config.
