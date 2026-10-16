@@ -4,7 +4,7 @@
  * Plugin Name:      Mai Arena Disqus
  * Plugin URI:       https://bizbudding.com
  * Description:      Enables Disqus compatibility for sites imported from Arena's Tempest CMS.
- * Version:          0.3.0
+ * Version:          0.4.0
  * Requires PHP:     8.1
  * Requires Plugins: disqus-conditional-load
  *
@@ -16,6 +16,9 @@ namespace Mai\Arena\Disqus;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+// Include vendor libraries.
+require_once __DIR__ . '/vendor/autoload.php';
 
 // Require classes.
 require_once __DIR__ . '/classes/class-config.php';
@@ -53,4 +56,39 @@ function init() {
 
 	// Instantiate Disqus.
 	new Config( $args );
+}
+
+add_action( 'plugins_loaded', __NAMESPACE__ . '\updater' );
+/**
+ * Setup the updater.
+ *
+ * Sites only see an update when a new tag exists on GitHub.
+ *
+ * @since 0.4.0
+ *
+ * @return void
+ */
+function updater() {
+	// Bail if plugin updater is not loaded.
+	if ( ! class_exists( 'YahnisElsts\PluginUpdateChecker\v5\PucFactory' ) ) {
+		return;
+	}
+
+	// Setup the updater.
+	$updater = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker( 'https://github.com/maithemewp/mai-arena-disqus/', __FILE__, 'mai-arena-disqus' );
+
+	// Maybe set github api token.
+	if ( defined( 'MAI_GITHUB_API_TOKEN' ) ) {
+		$updater->setAuthentication( MAI_GITHUB_API_TOKEN );
+	}
+
+	// Add icons for Dashboard > Updates screen.
+	if ( function_exists( 'mai_get_updater_icons' ) && $icons = mai_get_updater_icons() ) {
+		$updater->addResultFilter(
+			function ( $info ) use ( $icons ) {
+				$info->icons = $icons;
+				return $info;
+			}
+		);
+	}
 }
